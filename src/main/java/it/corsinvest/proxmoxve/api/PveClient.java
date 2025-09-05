@@ -14,147 +14,145 @@ import org.json.JSONException;
  */
 public class PveClient extends PveClientBase {
 
-    private final PveClient client;
-
     public PveClient(String hostname, int port) {
         super(hostname, port);
-        client = this;
+    }
+
+    public PveClient(String hostname, int port, String apiToken) {
+        super(hostname, port);
+        this.setApiToken(apiToken);
     }
 
     private PVECluster cluster;
 
     public PVECluster getCluster() {
-        return cluster == null ? (cluster = new PVECluster(client)) : cluster;
+        return cluster == null ? (cluster = new PVECluster()) : cluster;
     }
     private PVENodes nodes;
 
     public PVENodes getNodes() {
-        return nodes == null ? (nodes = new PVENodes(client)) : nodes;
+        return nodes == null ? (nodes = new PVENodes()) : nodes;
     }
     private PVEStorage storage;
 
     public PVEStorage getStorage() {
-        return storage == null ? (storage = new PVEStorage(client)) : storage;
+        return storage == null ? (storage = new PVEStorage()) : storage;
     }
     private PVEAccess access;
 
     public PVEAccess getAccess() {
-        return access == null ? (access = new PVEAccess(client)) : access;
+        return access == null ? (access = new PVEAccess()) : access;
     }
     private PVEPools pools;
 
     public PVEPools getPools() {
-        return pools == null ? (pools = new PVEPools(client)) : pools;
+        return pools == null ? (pools = new PVEPools()) : pools;
     }
     private PVEVersion version;
 
     public PVEVersion getVersion() {
-        return version == null ? (version = new PVEVersion(client)) : version;
+        return version == null ? (version = new PVEVersion()) : version;
     }
 
     public class PVECluster {
 
-        private final PveClient client;
-
-        protected PVECluster(PveClient client) {
-            this.client = client;
-
+        protected PVECluster() {
         }
 
         private PVEReplication replication;
 
         public PVEReplication getReplication() {
-            return replication == null ? (replication = new PVEReplication(client)) : replication;
+            return replication == null ? (replication = new PVEReplication(PveClient.this)) : replication;
         }
         private PVEMetrics metrics;
 
         public PVEMetrics getMetrics() {
-            return metrics == null ? (metrics = new PVEMetrics(client)) : metrics;
+            return metrics == null ? (metrics = new PVEMetrics(PveClient.this)) : metrics;
         }
         private PVENotifications notifications;
 
         public PVENotifications getNotifications() {
-            return notifications == null ? (notifications = new PVENotifications(client)) : notifications;
+            return notifications == null ? (notifications = new PVENotifications(PveClient.this)) : notifications;
         }
         private PVEConfig config;
 
         public PVEConfig getConfig() {
-            return config == null ? (config = new PVEConfig(client)) : config;
+            return config == null ? (config = new PVEConfig(PveClient.this)) : config;
         }
         private PVEFirewall firewall;
 
         public PVEFirewall getFirewall() {
-            return firewall == null ? (firewall = new PVEFirewall(client)) : firewall;
+            return firewall == null ? (firewall = new PVEFirewall(PveClient.this)) : firewall;
         }
         private PVEBackup backup;
 
         public PVEBackup getBackup() {
-            return backup == null ? (backup = new PVEBackup(client)) : backup;
+            return backup == null ? (backup = new PVEBackup(PveClient.this)) : backup;
         }
         private PVEBackupInfo backupInfo;
 
         public PVEBackupInfo getBackupInfo() {
-            return backupInfo == null ? (backupInfo = new PVEBackupInfo(client)) : backupInfo;
+            return backupInfo == null ? (backupInfo = new PVEBackupInfo(PveClient.this)) : backupInfo;
         }
         private PVEHa ha;
 
         public PVEHa getHa() {
-            return ha == null ? (ha = new PVEHa(client)) : ha;
+            return ha == null ? (ha = new PVEHa(PveClient.this)) : ha;
         }
         private PVEAcme acme;
 
         public PVEAcme getAcme() {
-            return acme == null ? (acme = new PVEAcme(client)) : acme;
+            return acme == null ? (acme = new PVEAcme(PveClient.this)) : acme;
         }
         private PVECeph ceph;
 
         public PVECeph getCeph() {
-            return ceph == null ? (ceph = new PVECeph(client)) : ceph;
+            return ceph == null ? (ceph = new PVECeph(PveClient.this)) : ceph;
         }
         private PVEJobs jobs;
 
         public PVEJobs getJobs() {
-            return jobs == null ? (jobs = new PVEJobs(client)) : jobs;
+            return jobs == null ? (jobs = new PVEJobs(PveClient.this)) : jobs;
         }
         private PVEMapping mapping;
 
         public PVEMapping getMapping() {
-            return mapping == null ? (mapping = new PVEMapping(client)) : mapping;
+            return mapping == null ? (mapping = new PVEMapping(PveClient.this)) : mapping;
         }
         private PVESdn sdn;
 
         public PVESdn getSdn() {
-            return sdn == null ? (sdn = new PVESdn(client)) : sdn;
+            return sdn == null ? (sdn = new PVESdn(PveClient.this)) : sdn;
         }
         private PVELog log;
 
         public PVELog getLog() {
-            return log == null ? (log = new PVELog(client)) : log;
+            return log == null ? (log = new PVELog(PveClient.this)) : log;
         }
         private PVEResources resources;
 
         public PVEResources getResources() {
-            return resources == null ? (resources = new PVEResources(client)) : resources;
+            return resources == null ? (resources = new PVEResources(PveClient.this)) : resources;
         }
         private PVETasks tasks;
 
         public PVETasks getTasks() {
-            return tasks == null ? (tasks = new PVETasks(client)) : tasks;
+            return tasks == null ? (tasks = new PVETasks(PveClient.this)) : tasks;
         }
         private PVEOptions options;
 
         public PVEOptions getOptions() {
-            return options == null ? (options = new PVEOptions(client)) : options;
+            return options == null ? (options = new PVEOptions(PveClient.this)) : options;
         }
         private PVEStatus status;
 
         public PVEStatus getStatus() {
-            return status == null ? (status = new PVEStatus(client)) : status;
+            return status == null ? (status = new PVEStatus(PveClient.this)) : status;
         }
         private PVENextid nextid;
 
         public PVENextid getNextid() {
-            return nextid == null ? (nextid = new PVENextid(client)) : nextid;
+            return nextid == null ? (nextid = new PVENextid(PveClient.this)) : nextid;
         }
 
         public class PVEReplication {
@@ -167,7 +165,7 @@ public class PveClient extends PveClientBase {
             }
 
             public PVEIdItem get(Object id) {
-                return new PVEIdItem(client, id);
+                return new PVEIdItem(PveClient.this, id);
             }
 
             public class PVEIdItem {
@@ -350,12 +348,12 @@ public class PveClient extends PveClientBase {
             private PVEServer server;
 
             public PVEServer getServer() {
-                return server == null ? (server = new PVEServer(client)) : server;
+                return server == null ? (server = new PVEServer(PveClient.this)) : server;
             }
             private PVEExport export;
 
             public PVEExport getExport() {
-                return export == null ? (export = new PVEExport(client)) : export;
+                return export == null ? (export = new PVEExport(PveClient.this)) : export;
             }
 
             public class PVEServer {
@@ -7274,22 +7272,18 @@ public class PveClient extends PveClientBase {
          * @throws JSONException
          */
         public Result index() throws JSONException {
-            return client.get("/cluster", null);
+            return PveClient.this.get("/cluster", null);
         }
 
     }
 
     public class PVENodes {
 
-        private final PveClient client;
-
-        protected PVENodes(PveClient client) {
-            this.client = client;
-
+        protected PVENodes() {
         }
 
         public PVENodeItem get(Object node) {
-            return new PVENodeItem(client, node);
+            return new PVENodeItem(PveClient.this, node);
         }
 
         public class PVENodeItem {
@@ -21382,22 +21376,18 @@ public class PveClient extends PveClientBase {
          * @throws JSONException
          */
         public Result index() throws JSONException {
-            return client.get("/nodes", null);
+            return PveClient.this.get("/nodes", null);
         }
 
     }
 
     public class PVEStorage {
 
-        private final PveClient client;
-
-        protected PVEStorage(PveClient client) {
-            this.client = client;
-
+        protected PVEStorage() {
         }
 
         public PVEStorageItem get(Object storage) {
-            return new PVEStorageItem(client, storage);
+            return new PVEStorageItem(PveClient.this, storage);
         }
 
         public class PVEStorageItem {
@@ -21610,7 +21600,7 @@ public class PveClient extends PveClientBase {
         public Result index(String type) throws JSONException {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("type", type);
-            return client.get("/storage", parameters);
+            return PveClient.this.get("/storage", parameters);
         }
 
         /**
@@ -21621,7 +21611,7 @@ public class PveClient extends PveClientBase {
          */
 
         public Result index() throws JSONException {
-            return client.get("/storage", null);
+            return PveClient.this.get("/storage", null);
         }
 
         /**
@@ -21792,7 +21782,7 @@ public class PveClient extends PveClientBase {
             parameters.put("username", username);
             parameters.put("vgname", vgname);
             parameters.put("volume", volume);
-            return client.create("/storage", parameters);
+            return PveClient.this.create("/storage", parameters);
         }
 
         /**
@@ -21809,69 +21799,65 @@ public class PveClient extends PveClientBase {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("storage", storage);
             parameters.put("type", type);
-            return client.create("/storage", parameters);
+            return PveClient.this.create("/storage", parameters);
         }
 
     }
 
     public class PVEAccess {
 
-        private final PveClient client;
-
-        protected PVEAccess(PveClient client) {
-            this.client = client;
-
+        protected PVEAccess() {
         }
 
         private PVEUsers users;
 
         public PVEUsers getUsers() {
-            return users == null ? (users = new PVEUsers(client)) : users;
+            return users == null ? (users = new PVEUsers(PveClient.this)) : users;
         }
         private PVEGroups groups;
 
         public PVEGroups getGroups() {
-            return groups == null ? (groups = new PVEGroups(client)) : groups;
+            return groups == null ? (groups = new PVEGroups(PveClient.this)) : groups;
         }
         private PVERoles roles;
 
         public PVERoles getRoles() {
-            return roles == null ? (roles = new PVERoles(client)) : roles;
+            return roles == null ? (roles = new PVERoles(PveClient.this)) : roles;
         }
         private PVEAcl acl;
 
         public PVEAcl getAcl() {
-            return acl == null ? (acl = new PVEAcl(client)) : acl;
+            return acl == null ? (acl = new PVEAcl(PveClient.this)) : acl;
         }
         private PVEDomains domains;
 
         public PVEDomains getDomains() {
-            return domains == null ? (domains = new PVEDomains(client)) : domains;
+            return domains == null ? (domains = new PVEDomains(PveClient.this)) : domains;
         }
         private PVEOpenid openid;
 
         public PVEOpenid getOpenid() {
-            return openid == null ? (openid = new PVEOpenid(client)) : openid;
+            return openid == null ? (openid = new PVEOpenid(PveClient.this)) : openid;
         }
         private PVETfa tfa;
 
         public PVETfa getTfa() {
-            return tfa == null ? (tfa = new PVETfa(client)) : tfa;
+            return tfa == null ? (tfa = new PVETfa(PveClient.this)) : tfa;
         }
         private PVETicket ticket;
 
         public PVETicket getTicket() {
-            return ticket == null ? (ticket = new PVETicket(client)) : ticket;
+            return ticket == null ? (ticket = new PVETicket(PveClient.this)) : ticket;
         }
         private PVEPassword password;
 
         public PVEPassword getPassword() {
-            return password == null ? (password = new PVEPassword(client)) : password;
+            return password == null ? (password = new PVEPassword(PveClient.this)) : password;
         }
         private PVEPermissions permissions;
 
         public PVEPermissions getPermissions() {
-            return permissions == null ? (permissions = new PVEPermissions(client)) : permissions;
+            return permissions == null ? (permissions = new PVEPermissions(PveClient.this)) : permissions;
         }
 
         public class PVEUsers {
@@ -23352,22 +23338,18 @@ public class PveClient extends PveClientBase {
          * @throws JSONException
          */
         public Result index() throws JSONException {
-            return client.get("/access", null);
+            return PveClient.this.get("/access", null);
         }
 
     }
 
     public class PVEPools {
 
-        private final PveClient client;
-
-        protected PVEPools(PveClient client) {
-            this.client = client;
-
+        protected PVEPools() {
         }
 
         public PVEPoolidItem get(Object poolid) {
-            return new PVEPoolidItem(client, poolid);
+            return new PVEPoolidItem(PveClient.this, poolid);
         }
 
         public class PVEPoolidItem {
@@ -23469,7 +23451,7 @@ public class PveClient extends PveClientBase {
         public Result deletePool(String poolid) throws JSONException {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("poolid", poolid);
-            return client.delete("/pools", parameters);
+            return PveClient.this.delete("/pools", parameters);
         }
 
         /**
@@ -23485,7 +23467,7 @@ public class PveClient extends PveClientBase {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("poolid", poolid);
             parameters.put("type", type);
-            return client.get("/pools", parameters);
+            return PveClient.this.get("/pools", parameters);
         }
 
         /**
@@ -23496,7 +23478,7 @@ public class PveClient extends PveClientBase {
          */
 
         public Result index() throws JSONException {
-            return client.get("/pools", null);
+            return PveClient.this.get("/pools", null);
         }
 
         /**
@@ -23512,7 +23494,7 @@ public class PveClient extends PveClientBase {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("poolid", poolid);
             parameters.put("comment", comment);
-            return client.create("/pools", parameters);
+            return PveClient.this.create("/pools", parameters);
         }
 
         /**
@@ -23526,7 +23508,7 @@ public class PveClient extends PveClientBase {
         public Result createPool(String poolid) throws JSONException {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("poolid", poolid);
-            return client.create("/pools", parameters);
+            return PveClient.this.create("/pools", parameters);
         }
 
         /**
@@ -23553,7 +23535,7 @@ public class PveClient extends PveClientBase {
             parameters.put("delete", delete);
             parameters.put("storage", storage);
             parameters.put("vms", vms);
-            return client.set("/pools", parameters);
+            return PveClient.this.set("/pools", parameters);
         }
 
         /**
@@ -23567,18 +23549,14 @@ public class PveClient extends PveClientBase {
         public Result updatePool(String poolid) throws JSONException {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("poolid", poolid);
-            return client.set("/pools", parameters);
+            return PveClient.this.set("/pools", parameters);
         }
 
     }
 
     public class PVEVersion {
 
-        private final PveClient client;
-
-        protected PVEVersion(PveClient client) {
-            this.client = client;
-
+        protected PVEVersion() {
         }
 
         /**
@@ -23589,7 +23567,7 @@ public class PveClient extends PveClientBase {
          * @throws JSONException
          */
         public Result version() throws JSONException {
-            return client.get("/version", null);
+            return PveClient.this.get("/version", null);
         }
 
     }

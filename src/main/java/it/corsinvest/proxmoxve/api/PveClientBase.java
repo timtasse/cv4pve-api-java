@@ -484,6 +484,7 @@ public class PveClientBase {
             }
         } catch (IOException ex) {
             Logger.getLogger(PveClientBase.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PveException("Eror in communication to " + this._hostname, ex);
         }
 
         _lastResult = new Result(response,
