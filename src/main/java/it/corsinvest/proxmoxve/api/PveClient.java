@@ -59,6 +59,10 @@ public class PveClient extends PveClientBase {
         protected PVECluster() {
         }
 
+        public PveClient getClient() {
+            return PveClient.this;
+        }
+
         private PVEReplication replication;
 
         public PVEReplication getReplication() {
@@ -7296,6 +7300,10 @@ public class PveClient extends PveClientBase {
                 this.node = node;
             }
 
+            public PveClient getClient() {
+                return client;
+            }
+
             private PVEQemu qemu;
 
             public PVEQemu getQemu() {
@@ -7531,6 +7539,18 @@ public class PveClient extends PveClientBase {
                         this.client = client;
                         this.node = node;
                         this.vmid = vmid;
+                    }
+
+                    public PveClient getClient() {
+                        return client;
+                    }
+
+                    public Object getNode() {
+                        return node;
+                    }
+
+                    public Object getVmid() {
+                        return vmid;
                     }
 
                     private PVEFirewall firewall;
@@ -21398,6 +21418,10 @@ public class PveClient extends PveClientBase {
             protected PVEStorageItem(PveClient client, Object storage) {
                 this.client = client;
                 this.storage = storage;
+            }
+
+            public PveClient getClient() {
+                return client;
             }
 
             /**
