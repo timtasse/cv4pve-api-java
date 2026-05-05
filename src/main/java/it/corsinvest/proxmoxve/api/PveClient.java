@@ -12166,6 +12166,19 @@ public class PveClient extends PveClientBase {
                  * Create or restore a virtual machine.
                  *
                  * @param vmid The (unique) ID of the VM.
+                 * @param parameters Map with VM Parameters
+                 * @return Result
+                 * @throws JSONException
+                 */
+                public Result createVm(final int vmid, final Map<String, Object> parameters) throws JSONException {
+                    parameters.put("vmid", vmid);
+                    return client.create("/nodes/" + this.node + "/qemu", parameters);
+                }
+
+                /**
+                 * Create or restore a virtual machine.
+                 *
+                 * @param vmid The (unique) ID of the VM.
                  * @return Result
                  * @throws JSONException
                  */
