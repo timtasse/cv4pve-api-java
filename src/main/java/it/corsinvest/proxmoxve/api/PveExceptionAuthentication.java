@@ -9,7 +9,7 @@ package it.corsinvest.proxmoxve.api;
  */
 public class PveExceptionAuthentication extends Exception {
 
-    private final Result _result;
+    private final Result result;
 
     /**
      * Constructor
@@ -19,7 +19,7 @@ public class PveExceptionAuthentication extends Exception {
      */
     public PveExceptionAuthentication(Result result, String errorMessage) {
         super(errorMessage);
-        _result = result;
+        this.result = result;
     }
 
     /**
@@ -28,6 +28,6 @@ public class PveExceptionAuthentication extends Exception {
      * @return
      */
     public Result getResult() {
-        return _result;
+        return result;
     }
 }

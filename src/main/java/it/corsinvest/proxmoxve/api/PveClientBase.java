@@ -30,25 +30,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Proxmox VE Client Base
  */
+@SuppressWarnings("unused")
 public class PveClientBase {
 
     private static final Logger logger = Logger.getLogger(PveClientBase.class.getName());
 
-    private String _ticketCSRFPreventionToken;
-    private String _ticketPVEAuthCookie;
-    private final String _hostname;
-    private final int _port;
-    private Result _lastResult;
-    private ResponseType _responseType = ResponseType.JSON;
-    private String _apiToken;
-    private Proxy _proxy = Proxy.NO_PROXY;
-    private int _timeout = 0;
-    private boolean _validateCertificate = false;
+    private String ticketCSRFPreventionToken;
+    private String ticketPVEAuthCookie;
+    private final String hostname;
+    private final int port;
+    private Result lastResult;
+    private ResponseType responseType = ResponseType.JSON;
+    private String apiToken;
+    private Proxy proxy = Proxy.NO_PROXY;
+    private int timeout = 0;
+    private boolean validateCertificate = false;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public PveClientBase(String hostname, int port) {
-        _hostname = hostname;
-        _port = port;
+        this.hostname = hostname;
+        this.port = port;
     }
 
     /**
@@ -57,7 +58,7 @@ public class PveClientBase {
      * @return String The configured hostname.
      */
     public String getHostname() {
-        return _hostname;
+        return hostname;
     }
 
     /**
@@ -66,7 +67,7 @@ public class PveClientBase {
      * @return int The configured port.
      */
     public int getPort() {
-        return _port;
+        return port;
     }
 
     /**
@@ -75,7 +76,7 @@ public class PveClientBase {
      * @return boolean Whether SSL certificate validation is enabled
      */
     public boolean getValidateCertificate() {
-        return _validateCertificate;
+        return validateCertificate;
     }
 
     /**
@@ -84,7 +85,7 @@ public class PveClientBase {
      * @param validateCertificate Whether to validate SSL certificates
      */
     public void setValidateCertificate(boolean validateCertificate) {
-        _validateCertificate = validateCertificate;
+        this.validateCertificate = validateCertificate;
     }
 
     /**
@@ -93,7 +94,7 @@ public class PveClientBase {
      * @return Proxy Current proxy configuration
      */
     public Proxy getProxy() {
-        return _proxy;
+        return proxy;
     }
 
     /**
@@ -102,7 +103,7 @@ public class PveClientBase {
      * @param proxy Proxy configuration to use
      */
     public void setProxy(Proxy proxy) {
-        _proxy = proxy;
+        this.proxy = proxy;
     }
 
     /**
@@ -112,7 +113,7 @@ public class PveClientBase {
      * @return ResponseType Current response type configuration
      */
     public ResponseType getResponseType() {
-        return _responseType;
+        return responseType;
     }
 
     /**
@@ -122,7 +123,7 @@ public class PveClientBase {
      * @param responseType Response type to set
      */
     public void setResponseType(ResponseType responseType) {
-        _responseType = responseType;
+        this.responseType = responseType;
     }
 
     /**
@@ -134,7 +135,7 @@ public class PveClientBase {
         if (timeout < 0) {
             throw new IllegalArgumentException("timeout can not be negative");
         }
-        _timeout = timeout;
+        this.timeout = timeout;
     }
 
     /**
@@ -143,7 +144,7 @@ public class PveClientBase {
      * @return int Connection timeout in milliseconds
      */
     public int getTimeout() {
-        return _timeout;
+        return timeout;
     }
 
     /**
@@ -207,8 +208,8 @@ public class PveClientBase {
                         "Couldn't authenticate user: missing Two Factor Authentication (TFA)");
             }
 
-            _ticketCSRFPreventionToken = dataNode.get("CSRFPreventionToken").asText();
-            _ticketPVEAuthCookie = dataNode.get("ticket").asText();
+            ticketCSRFPreventionToken = dataNode.get("CSRFPreventionToken").asText();
+            ticketPVEAuthCookie = dataNode.get("ticket").asText();
         }
         return result.isSuccessStatusCode();
     }
@@ -272,7 +273,7 @@ public class PveClientBase {
      * @return String API token string
      */
     public String getApiToken() {
-        return _apiToken;
+        return apiToken;
     }
 
     /**
@@ -281,23 +282,23 @@ public class PveClientBase {
      * @param apiToken API token string
      */
     public void setApiToken(String apiToken) {
-        _apiToken = apiToken;
+        this.apiToken = apiToken;
     }
 
     private void setToken(HttpURLConnection httpCon) {
-        if (_ticketCSRFPreventionToken != null) {
-            httpCon.setRequestProperty("CSRFPreventionToken", _ticketCSRFPreventionToken);
-            httpCon.setRequestProperty("Cookie", "PVEAuthCookie=" + _ticketPVEAuthCookie);
+        if (ticketCSRFPreventionToken != null) {
+            httpCon.setRequestProperty("CSRFPreventionToken", ticketCSRFPreventionToken);
+            httpCon.setRequestProperty("Cookie", "PVEAuthCookie=" + ticketPVEAuthCookie);
         }
 
-        if (_apiToken != null && !_apiToken.isEmpty()) {
-            httpCon.setRequestProperty("Authorization", "PVEAPIToken " + _apiToken);
+        if (apiToken != null && !apiToken.isEmpty()) {
+            httpCon.setRequestProperty("Authorization", "PVEAPIToken " + apiToken);
         }
     }
 
     private void setConnectionTimeout(HttpURLConnection httpCon) {
-        if (_timeout > 0) {
-            httpCon.setConnectTimeout(_timeout);
+        if (timeout > 0) {
+            httpCon.setConnectTimeout(timeout);
         }
     }
 
@@ -307,7 +308,7 @@ public class PveClientBase {
      * @param httpsConn The HTTPS connection to configure
      */
     private void configureTrustAllSSL(HttpsURLConnection httpsConn) {
-        if (!_validateCertificate) {
+        if (!validateCertificate) {
             try {
                 // Create trust manager that trusts all certificates
                 var trustAllCerts = new TrustManager[] {
@@ -350,7 +351,7 @@ public class PveClientBase {
     private String buildQueryString(Map<String, Object> params) {
         var query = new StringBuilder();
         params.forEach((key, value) -> {
-            if (query.length() > 0) {
+            if (!query.isEmpty()) {
                 query.append("&");
             }
             query.append(URLEncoder.encode(key, StandardCharsets.UTF_8))
@@ -389,6 +390,10 @@ public class PveClientBase {
     }
 
     private Result executeAction(String resource, MethodType methodType, Map<String, Object> parameters) {
+        if (methodType == null) {
+            throw new AssertionError("methodType is null");
+        }
+
         var url = getApiUrl() + resource;
 
         // decode http method
@@ -397,12 +402,11 @@ public class PveClientBase {
             case SET -> "PUT";
             case CREATE -> "POST";
             case DELETE -> "DELETE";
-            default -> throw new AssertionError();
         };
 
         var params = new LinkedHashMap<String, Object>();
         if (parameters != null) {
-            parameters.entrySet().stream().filter((entry) -> (entry.getValue() != null)).forEachOrdered((entry) -> {
+            parameters.entrySet().stream().filter(entry -> (entry.getValue() != null)).forEachOrdered(entry -> {
                 var value = entry.getValue();
                 if (value instanceof Boolean) {
                     params.put(entry.getKey(), Boolean.TRUE.equals(value) ? 1 : 0);
@@ -424,7 +428,7 @@ public class PveClientBase {
                         url += "?" + buildQueryString(params);
                     }
 
-                    httpCon = (HttpURLConnection) URI.create(url).toURL().openConnection(_proxy);
+                    httpCon = (HttpURLConnection) URI.create(url).toURL().openConnection(proxy);
 
                     // Configure SSL for this connection only (not global)
                     if (httpCon instanceof HttpsURLConnection httpsConn) {
@@ -437,10 +441,9 @@ public class PveClientBase {
                     break;
                 }
 
-                case SET:
-                case CREATE: {
+                case SET, CREATE: {
                     var data = objectMapper.writeValueAsString(params);
-                    httpCon = (HttpURLConnection) URI.create(url).toURL().openConnection(_proxy);
+                    httpCon = (HttpURLConnection) URI.create(url).toURL().openConnection(proxy);
 
                     // Configure SSL for this connection only (not global)
                     if (httpCon instanceof HttpsURLConnection httpsConn) {
@@ -459,7 +462,7 @@ public class PveClientBase {
                 }
 
                 case DELETE: {
-                    httpCon = (HttpURLConnection) URI.create(url).toURL().openConnection(_proxy);
+                    httpCon = (HttpURLConnection) URI.create(url).toURL().openConnection(proxy);
 
                     // Configure SSL for this connection only (not global)
                     if (httpCon instanceof HttpsURLConnection httpsConn) {
@@ -489,27 +492,19 @@ public class PveClientBase {
             String responseBody = readResponse(httpCon, statusCode);
 
             if (!responseBody.isEmpty()) {
-                switch (getResponseType()) {
-                    case JSON:
-                        response = objectMapper.readTree(responseBody);
-                        break;
-
-                    case PNG:
-                        response = objectMapper.createObjectNode()
-                                .put("data", "data:image/png;base64,"
-                                        + Base64.getEncoder().encodeToString(responseBody.getBytes(StandardCharsets.UTF_8)));
-                        break;
-
-                    default:
-                        throw new AssertionError();
-                }
+                response = switch (getResponseType()) {
+                    case JSON -> objectMapper.readTree(responseBody);
+                    case PNG -> objectMapper.createObjectNode()
+                            .put("data", "data:image/png;base64,"
+                                    + Base64.getEncoder().encodeToString(responseBody.getBytes(StandardCharsets.UTF_8)));
+                };
             }
 
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Error executing request", ex);
         }
 
-        _lastResult = new Result(response,
+        lastResult = new Result(response,
                 statusCode,
                 reasonPhrase,
                 resource,
@@ -527,14 +522,14 @@ public class PveClientBase {
                     """,
                     new Object[] {
                             response != null ? response.toPrettyString() : "null",
-                            _lastResult.getStatusCode(),
-                            _lastResult.getReasonPhrase(),
-                            _lastResult.isSuccessStatusCode()
+                            lastResult.getStatusCode(),
+                            lastResult.getReasonPhrase(),
+                            lastResult.isSuccessStatusCode()
                     });
         } else if (logger.isLoggable(Level.FINE)) {
             logger.fine("=============================");
         }
-        return _lastResult;
+        return lastResult;
     }
 
     /**
@@ -543,7 +538,7 @@ public class PveClientBase {
      * @return Result
      */
     public Result getLastResult() {
-        return _lastResult;
+        return lastResult;
     }
 
     /**
@@ -555,9 +550,7 @@ public class PveClientBase {
      */
     public static void addIndexedParameter(Map<String, Object> parameters, String name, Map<Integer, String> value) {
         if (value != null) {
-            value.entrySet().forEach((entry) -> {
-                parameters.put(name + entry.getKey(), entry.getValue());
-            });
+            value.forEach((key, value1) -> parameters.put(name + key, value1));
         }
     }
 

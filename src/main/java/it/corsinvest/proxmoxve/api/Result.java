@@ -11,15 +11,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 /**
  * Result request API
  */
+@SuppressWarnings("unused")
 public class Result {
 
-    private final String _reasonPhrase;
-    private final int _statusCode;
-    private final JsonNode _response;
-    private final String _requestResource;
-    private final Map<String, Object> _requestParameters;
-    private final MethodType _methodType;
-    private final ResponseType _responseType;
+    private final String reasonPhrase;
+    private final int statusCode;
+    private final JsonNode response;
+    private final String requestResource;
+    private final Map<String, Object> requestParameters;
+    private final MethodType methodType;
+    private final ResponseType responseType;
 
     protected Result(JsonNode response,
             int statusCode,
@@ -28,13 +29,13 @@ public class Result {
             Map<String, Object> requestParameters,
             MethodType methodType,
             ResponseType responseType) {
-        _response = response;
-        _statusCode = statusCode;
-        _reasonPhrase = reasonPhrase;
-        _requestResource = requestResource;
-        _requestParameters = requestParameters;
-        _methodType = methodType;
-        _responseType = responseType;
+        this.response = response;
+        this.statusCode = statusCode;
+        this.reasonPhrase = reasonPhrase;
+        this.requestResource = requestResource;
+        this.requestParameters = requestParameters;
+        this.methodType = methodType;
+        this.responseType = responseType;
     }
 
     /**
@@ -43,7 +44,7 @@ public class Result {
      * @return
      */
     public MethodType getMethodType() {
-        return _methodType;
+        return methodType;
     }
 
     /**
@@ -52,7 +53,7 @@ public class Result {
      * @return
      */
     public ResponseType getResponseType() {
-        return _responseType;
+        return responseType;
     }
 
     /**
@@ -61,7 +62,7 @@ public class Result {
      * @return
      */
     public String getRequestResource() {
-        return _requestResource;
+        return requestResource;
     }
 
     /**
@@ -70,7 +71,7 @@ public class Result {
      * @return
      */
     public Map<String, Object> getRequestParameters() {
-        return _requestParameters;
+        return requestParameters;
     }
 
     /**
@@ -80,7 +81,7 @@ public class Result {
      * @return
      */
     public String getReasonPhrase() {
-        return _reasonPhrase;
+        return reasonPhrase;
     }
 
     /**
@@ -89,7 +90,7 @@ public class Result {
      * @return
      */
     public int getStatusCode() {
-        return _statusCode;
+        return statusCode;
     }
 
     /**
@@ -98,7 +99,7 @@ public class Result {
      * @return
      */
     public boolean isSuccessStatusCode() {
-        return _statusCode == HttpURLConnection.HTTP_OK;
+        return statusCode == HttpURLConnection.HTTP_OK;
     }
 
     /**
@@ -107,7 +108,7 @@ public class Result {
      * @return JsonNode
      */
     public JsonNode getResponse() {
-        return _response;
+        return response;
     }
 
     /**
@@ -116,7 +117,7 @@ public class Result {
      * @return JsonNode representing the data field, or null if not present
      */
     public JsonNode getData() {
-        return _response != null ? _response.get("data") : null;
+        return response != null ? response.get("data") : null;
     }
 
     /**
@@ -125,7 +126,7 @@ public class Result {
      * @return
      */
     public boolean responseInError() {
-        return _response.has("errors") && !_response.get("errors").isNull();
+        return response.has("errors") && !response.get("errors").isNull();
     }
 
     /**
@@ -136,10 +137,10 @@ public class Result {
     public String getError() {
         var ret = new StringBuilder();
         if (responseInError()) {
-            var errors = _response.get("errors");
+            var errors = response.get("errors");
             if (errors.isObject()) {
                 errors.fieldNames().forEachRemaining(fieldName -> {
-                    if (ret.length() > 0) {
+                    if (!ret.isEmpty()) {
                         ret.append("\n");
                     }
                     ret.append(fieldName).append(" : ").append(errors.get(fieldName).asText());
