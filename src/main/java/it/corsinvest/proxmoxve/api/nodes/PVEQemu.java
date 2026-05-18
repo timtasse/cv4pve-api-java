@@ -2516,11 +2516,12 @@ public class PVEQemu {
             /**
              * Set virtual machine options (asynchronous API).
              *
+             * @param parameters raw values of parameters
              * @return Result
              */
 
-            public Result updateVmAsync() {
-                return client.create("/nodes/" + this.node + "/qemu/" + this.vmid + "/config", null);
+            public Result updateVmAsync(final Map<String, Object> parameters) {
+                return client.create("/nodes/" + this.node + "/qemu/" + this.vmid + "/config", parameters);
             }
 
             /**
@@ -2864,11 +2865,12 @@ public class PVEQemu {
              * Set virtual machine options (synchronous API) - You should consider using the
              * POST method instead for any actions involving hotplug or storage allocation.
              *
+             * @param parameters raw values of parameters
              * @return Result
              */
 
-            public Result updateVm() {
-                return client.set("/nodes/" + this.node + "/qemu/" + this.vmid + "/config", null);
+            public Result updateVm(final Map<String, Object> parameters) {
+                return client.set("/nodes/" + this.node + "/qemu/" + this.vmid + "/config", parameters);
             }
 
         }
